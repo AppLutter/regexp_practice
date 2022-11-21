@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reg/models/user_info_model.dart';
 import 'package:reg/utils/regex.dart';
 import 'package:reg/widgets/user_text_form_field.dart';
 
@@ -15,6 +16,10 @@ class _UserFormScreenState extends State<UserFormScreen> {
   late FocusNode eMailFocusNode;
   late FocusNode residentNumberFocusNode;
   late FocusNode phoneFocusNode;
+
+  late TextEditingController nameController;
+  late TextEditingController phoneNumberController;
+  late TextEditingController residentNumberController;
   AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
 
   @override
@@ -24,6 +29,10 @@ class _UserFormScreenState extends State<UserFormScreen> {
     eMailFocusNode = FocusNode();
     residentNumberFocusNode = FocusNode();
     phoneFocusNode = FocusNode();
+
+    nameController = TextEditingController();
+    phoneNumberController = TextEditingController();
+    residentNumberController = TextEditingController();
   }
 
   @override
@@ -33,6 +42,10 @@ class _UserFormScreenState extends State<UserFormScreen> {
     eMailFocusNode.dispose();
     residentNumberFocusNode.dispose();
     phoneFocusNode.dispose();
+
+    nameController.dispose();
+    phoneNumberController.dispose();
+    residentNumberController.dispose();
   }
 
   @override
@@ -57,6 +70,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                       child: Column(
                         children: [
                           UserInfoTextFormField(
+                            controller: nameController,
                             labelText: '이름',
                             currentFocusNode: nameFocusNode,
                             autoValidateMode: autoValidateMode,
@@ -66,6 +80,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                           ),
                           const SizedBox(height: 20.0),
                           UserInfoTextFormField(
+                            controller: phoneNumberController,
                             labelText: '전화번호',
                             currentFocusNode: phoneFocusNode,
                             autoValidateMode: autoValidateMode,
@@ -74,19 +89,51 @@ class _UserFormScreenState extends State<UserFormScreen> {
                             notMatchString: '숫자로만 11자리 입력해주세요.',
                             keyboardType: TextInputType.number,
                           ),
-                          // const SizedBox(height: 20.0),
-                          // UserInfoTextFormField(
-                          //   labelText: '주민번호',
-                          //   currentFocusNode: residentNumberFocusNode,
-                          //   autoValidateMode: autoValidateMode,
-                          // ),
-                          // const SizedBox(height: 20.0),
+                          const SizedBox(height: 20.0),
+                          UserInfoTextFormField(
+                            controller: residentNumberController,
+                            labelText: '주민번호',
+                            currentFocusNode: residentNumberFocusNode,
+                            autoValidateMode: autoValidateMode,
+                            regExp: residentNumberRegExp,
+                            keyboardType: TextInputType.number,
+                            emptyString: '주민번호를 입력해주세요',
+                            notMatchString: '올바른 주민번호를 입력해주세요',
+                          ),
+                          const SizedBox(height: 20.0),
                           // UserInfoTextFormField(
                           //   labelText: '이메일',
                           //   currentFocusNode: eMailFocusNode,
                           //   autoValidateMode: autoValidateMode,
                           //   isLast: true,
                           // ),
+
+                          ///
+                          /// ///
+                          ///
+                          // UserInfoTextFormField(
+                          //   labelText: '이름',
+                          //   currentFocusNode: nameFocusNode,
+                          //   nextFocusNode: phoneFocusNode,
+                          // ),
+                          // const SizedBox(height: 20.0),
+                          // UserInfoTextFormField(
+                          //   labelText: '전화번호',
+                          //   currentFocusNode: phoneFocusNode,
+                          // ),
+                          // // const SizedBox(height: 20.0),
+                          // // UserInfoTextFormField(
+                          // //   labelText: '주민번호',
+                          // //   currentFocusNode: residentNumberFocusNode,
+                          // //   autoValidateMode: autoValidateMode,
+                          // // ),
+                          // // const SizedBox(height: 20.0),
+                          // // UserInfoTextFormField(
+                          // //   labelText: '이메일',
+                          // //   currentFocusNode: eMailFocusNode,
+                          // //   autoValidateMode: autoValidateMode,
+                          // //   isLast: true,
+                          // // ),
                         ],
                       ),
                     ),
@@ -109,7 +156,15 @@ class _UserFormScreenState extends State<UserFormScreen> {
                               autoValidateMode = AutovalidateMode.always;
                             });
                           }
-                          widget.formKey.currentState!.validate();
+                          if (widget.formKey.currentState!.validate()) {
+                            final UserInfoModel newUserInfoModel = UserInfoModel(
+                                name: nameController.text,
+                                phoneNumber: phoneNumberController.text,
+                                residentNumber: residentNumberController.text);
+
+                            Navigator.pop(context, newUserInfoModel);
+                          }
+                          ;
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 20.0),

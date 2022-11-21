@@ -60,10 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20.0),
                 Text('전화번호 : ${userInfoModel.phoneNumber}'),
                 const SizedBox(height: 20.0),
-                Text('주민번호 : ${userInfoModel.residentNumber}'),
+                Text(
+                  '주민번호 : ${userInfoModel.residentNumber}',
+                  style: TextStyle(color: Colors.red),
+                ),
                 const SizedBox(height: 20.0),
-                Text('이메일 : ${userInfoModel.eMail}'),
-                const SizedBox(height: 20.0),
+                // Text('이메일 : ${userInfoModel.eMail}'),
+                // const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () async {
                     final result = await Navigator.push(

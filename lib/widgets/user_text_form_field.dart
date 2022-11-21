@@ -9,6 +9,7 @@ class UserInfoTextFormField extends StatefulWidget {
     required this.regExp,
     required this.emptyString,
     required this.notMatchString,
+    required this.controller,
     this.keyboardType = TextInputType.text,
     this.isLast = false,
   }) : super(key: key);
@@ -20,6 +21,7 @@ class UserInfoTextFormField extends StatefulWidget {
   final TextInputType keyboardType;
   final String emptyString;
   final String notMatchString;
+  final TextEditingController controller;
 
 
   @override
@@ -30,6 +32,7 @@ class _UserInfoTextFormFieldState extends State<UserInfoTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       keyboardType: widget.keyboardType,
       autovalidateMode: widget.autoValidateMode,
       textInputAction: TextInputAction.done,
@@ -57,3 +60,4 @@ class _UserInfoTextFormFieldState extends State<UserInfoTextFormField> {
     );
   }
 }
+
